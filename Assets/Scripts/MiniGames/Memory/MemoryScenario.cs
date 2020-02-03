@@ -23,9 +23,10 @@ namespace MiniGames.Memory
         private AsyncState Intro()
         {
             return Planner.Chain()
-                    // TODO: intro cut scene. Run camera animation. Await animation finish
                     .AddAction(Debug.Log, "start intro")
-                    .AddTimeout(1f)
+                    .AddAction(() => controller.MemoryAnimations.CameraAnimator.SetTrigger("CameraRotate"))
+                    .AsCutScene()
+                    .AddAction(() => controller.MemoryAnimations.CameraAnimator.GetCurrentAnimatorStateInfo(0))
                     .AddAction(Debug.Log, "intro finished")
                 ;
         }
@@ -50,10 +51,11 @@ namespace MiniGames.Memory
 
         private AsyncState Outro()
         {
-            // TODO: outro cut scene. Run camera back to origin position. Await animation finish
             return Planner.Chain()
                     .AddAction(Debug.Log, "start outro")
-                    .AddTimeout(1f)
+                    .AddAction(() => controller.MemoryAnimations.CameraAnimator.SetTrigger("CameraRotate"))
+                    .AsCutScene()
+                    .AddAction(() => controller.MemoryAnimations.CameraAnimator.GetCurrentAnimatorStateInfo(0))
                     .AddAction(Debug.Log, "outro finished")
                 ;
         }

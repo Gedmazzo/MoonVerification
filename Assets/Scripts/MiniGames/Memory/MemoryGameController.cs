@@ -5,6 +5,8 @@ namespace MiniGames.Memory
 {
     public class MemoryGameController : MonoBehaviour
     {
+        public MemoryAnimations MemoryAnimations;
+
         public AsyncState RunGame(MemoryGameModel gameModel)
         {
             // game login entry point
