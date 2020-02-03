@@ -24,9 +24,7 @@ namespace MiniGames.Memory
         {
             return Planner.Chain()
                     .AddAction(Debug.Log, "start intro")
-                    .AddAction(() => controller.MemoryAnimations.CameraAnimator.SetTrigger("CameraRotate"))
-                    .AsCutScene()
-                    .AddAction(() => controller.MemoryAnimations.CameraAnimator.GetCurrentAnimatorStateInfo(0))
+                    .AddFunc(controller.MemoryAnimations.StartCutScene)
                     .AddAction(Debug.Log, "intro finished")
                 ;
         }
@@ -53,9 +51,7 @@ namespace MiniGames.Memory
         {
             return Planner.Chain()
                     .AddAction(Debug.Log, "start outro")
-                    .AddAction(() => controller.MemoryAnimations.CameraAnimator.SetTrigger("CameraRotate"))
-                    .AsCutScene()
-                    .AddAction(() => controller.MemoryAnimations.CameraAnimator.GetCurrentAnimatorStateInfo(0))
+                    .AddFunc(controller.MemoryAnimations.StartCutScene)
                     .AddAction(Debug.Log, "outro finished")
                 ;
         }
