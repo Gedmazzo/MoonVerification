@@ -12,15 +12,15 @@ namespace MiniGames.Memory
         {
             // game login entry point
             return Planner.Chain()
-                    .AddFunc(memoryCardDeal.CardDealing, 3)
+                    .AddAction(memoryCardDeal.SetImages, gameModel.images)
+                    .AddFunc(memoryCardDeal.CardDealing, gameModel.numberOfCardPairs)
                     .AddAwait(AwaitFunc)
                 ;
         }
 
         private void AwaitFunc(AsyncStateInfo state)
         {
-            // todo: game complete condition;
-            state.IsComplete = false;
+            state.IsComplete = memoryCardDeal.IsFinishGameRound;
         }
     }
 }

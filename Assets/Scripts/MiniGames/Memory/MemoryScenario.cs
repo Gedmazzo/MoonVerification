@@ -34,9 +34,9 @@ namespace MiniGames.Memory
             var asyncChain = Planner.Chain();
             asyncChain.AddAction(Debug.Log, "game started");
             asyncChain.AddFunc(progress.ShowProgressBar);
-            // TODO: implement game circle using game controller
-            // TODO: move hardcoded "5" count to game config
-            for (var i = 0; i < 5; i++)
+            asyncChain.AddAction(() => progress.NumberOfRounds = defaultGameModel.numberOfRounds);
+
+            for (var i = 0; i < defaultGameModel.numberOfRounds; i++)
             {
                 asyncChain
                         .AddFunc(controller.RunGame, defaultGameModel)
@@ -44,6 +44,7 @@ namespace MiniGames.Memory
                     ;
             }
 
+            asyncChain.AddFunc(progress.CloseProgressBar);
             asyncChain.AddAction(Debug.Log, "game finished");
             return asyncChain;
         }

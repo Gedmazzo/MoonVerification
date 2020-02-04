@@ -8,6 +8,9 @@ public class ProgressBar : MonoBehaviour
     [SerializeField] private Image barBack;
     [SerializeField] private Image barFront;
 
+    [SerializeField] private float fillAmountDuration = 2f;
+
+
     private void OnEnable()
     {
         ToggleBarImages(false);
@@ -18,9 +21,11 @@ public class ProgressBar : MonoBehaviour
         transform.localScale = Vector3.zero;
     }
 
-    public void SetFill(float value)
+    public Tween SetCurrentValue(float value)
     {
-        barFront.fillAmount = value;
+        return barFront
+                .DOFillAmount(barFront.fillAmount + value, fillAmountDuration)
+            ;
     }
 
     public AsyncState Show()
@@ -28,6 +33,14 @@ public class ProgressBar : MonoBehaviour
         return Planner.Chain()
                     .AddAction(ToggleBarImages, true)
                     .AddTween(ShowEffect)
+                ;
+    }
+
+    public AsyncState Close()
+    {
+        return Planner.Chain()
+                    .AddTween(CloseEffect)
+                    .AddAction(ToggleBarImages, false)
                 ;
     }
 

@@ -12,3 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 416d481cdf764001aa8c1ffbe2c5ef06, type: 3}
   m_Name: TestGameModel
   m_EditorClassIdentifier: 
+  numberOfCardPairs: 1
+  timeCardShow: 2
+  images:
+  - {fileID: 2800000, guid: 9c6a337b340dc7a499fc46ae8d9ca95f, type: 3}
+  - {fileID: 2800000, guid: 3dce5e5f044e0a84bb9eb97aa5010f0c, type: 3}
+  - {fileID: 2800000, guid: e7c0d5cd85354904cac14c725c46206e, type: 3}
+  - {fileID: 2800000, guid: 97ecc45fd0a2c654da63b464b1854c26, type: 3}
+  numberOfRounds: 1

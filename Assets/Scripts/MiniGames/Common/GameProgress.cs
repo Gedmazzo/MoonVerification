@@ -7,19 +7,12 @@ namespace MiniGames.Common
     {
         [SerializeField] private ProgressBar progressBar;
 
-        private int progressMax;
-
-        public void ResetProgress(int count)
-        {
-            progressBar.SetFill(0f);
-            progressMax = count;
-        }
+        public float NumberOfRounds { private get; set; }
 
         public AsyncState IncrementProgress()
         {
             return Planner.Chain()
-                    // TODO: run progress animation, await finish
-                    .AddTimeout(1f)
+                    .AddTween(progressBar.SetCurrentValue, 1f / NumberOfRounds)
                 ;
         }
 
@@ -27,8 +20,14 @@ namespace MiniGames.Common
         {
             return Planner.Chain()
                     .AddFunc(progressBar.Show)
-                    .AddAction(ResetProgress, 0)
                 ;
+        }
+
+        public AsyncState CloseProgressBar()
+        {
+            return Planner.Chain()
+                        .AddFunc(progressBar.Close)
+                    ;
         }
     }
 }

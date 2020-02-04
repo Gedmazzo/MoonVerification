@@ -1,56 +1,159 @@
-﻿using DG.Tweening;
-using Moon.Asyncs;
+﻿using Moon.Asyncs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MemoryCardDeal : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private int countFlipCardATime = 2;
+
+    public bool IsFinishGameRound { get; private set; }
+
+    public static bool IsDealing { get; private set; }
+    public static bool IsHandleFlipCards { get; private set; }
+
+    public static Action<Card> OnFlipedCard;
+
+    private void OnEnable()
+    {
+        OnFlipedCard += AddToFlipedList;
+    }
+
+    private List<GameObject> cardsPool = new List<GameObject>();
+    private List<Card> flipedCards = new List<Card>();
+
+    private Texture2D[] images;
+
+    public void SetImages(Texture2D[] images)
+    {
+        this.images = images;
+    }
 
     public AsyncState CardDealing(int numberOfPairs)
     {
+        IsFinishGameRound = false;
         var asyncChain = Planner.Chain();
         asyncChain.AddAction(Debug.Log, "Dealing started");
+        IsDealing = true;
 
-        var moveTargetPosition = new Vector3(-numberOfPairs, 0f, 0f);
-
-        for (var i = 0; i < numberOfPairs; i++)
+        var movePosition = new Vector3(-numberOfPairs, .1f, 0f);
+        for (var i = 0; i < numberOfPairs * 2; i++)
         {
-            asyncChain
-                    .AddFunc(InstantiateCard, moveTargetPosition)
-                ;
+            Card card = null;
 
-            var offset = 2f;
-            moveTargetPosition = new Vector3(moveTargetPosition.x + offset, 0f, 0f);
+            var instancePosition = Vector3.forward * 10f;
+            var instanceRotation = cardPrefab.transform.rotation;
+
+            if (cardsPool.Count > i && !cardsPool[i].activeSelf)
+            {
+                cardsPool[i].transform.position = instancePosition;
+                cardsPool[i].transform.rotation = instanceRotation;
+
+                card = cardsPool[i].GetComponent<Card>();
+                card.SetImage(GetImage());
+                card.gameObject.SetActive(true);
+
+                asyncChain.AddFunc(card.MoveToTable, movePosition);
+
+                movePosition += Vector3.right;
+                continue;
+            }
+
+            var cardObj = Instantiate(cardPrefab, instancePosition, instanceRotation, transform);
+            cardsPool.Add(cardObj);
+
+            card = cardObj.GetComponent<Card>();
+            card.SetImage(GetImage());
+            asyncChain.AddFunc(card.MoveToTable, movePosition);
+
+            movePosition += Vector3.right;
         }
 
         asyncChain.AddAction(Debug.Log, "Dealing finished");
+        asyncChain.onComplete += () => IsDealing = false;
         return asyncChain;
     }
 
-    private AsyncState InstantiateCard(Vector3 moveTargetPosition)
+    private Texture2D GetImage()
     {
+        return images[UnityEngine.Random.Range(0, images.Length)];
+    }
+
+    private void AddToFlipedList(Card card)
+    {
+        flipedCards.Add(card);
+        if (flipedCards.Count == countFlipCardATime)
+        {
+            HandleFlipedCards();
+        }
+    }
+
+    private void HandleFlipedCards()
+    {
+        IsHandleFlipCards = true;
         var asyncChain = Planner.Chain();
+        asyncChain.AddAwait((AsyncStateInfo state) => state.IsComplete = !Card.IsTweenRunning);
+        for (int i = 0; i < flipedCards.Count; i++)
+        {
+            var matches = new List<Card>();
+            matches.Add(flipedCards[i]);
+            for (int j = i + 1; j < flipedCards.Count; j++)
+            {
+                if (matches[0].Equals(flipedCards[j]))
+                    matches.Add(flipedCards[j]);
+            }
 
-        var offset = 10f;
-        var cardInstance0 = Instantiate(cardPrefab, Vector3.forward * offset, cardPrefab.transform.rotation, transform);
-        var cardInstance1 = Instantiate(cardPrefab, Vector3.forward * offset, cardPrefab.transform.rotation, transform);
+            if (matches.Count > 1)
+            {
+                flipedCards = flipedCards.Except(matches).ToList();
+                foreach (var m in matches)
+                {
+                    asyncChain
+                        .JoinTween(m.Hide)
+                        .JoinTween(m.MoveTo, Vector3.forward * 10f)
+                        .JoinFunc(m.SetActiveGameObject, false)
+                    ;
+                }
+            }
 
-        var moveTargetPosition0 = new Vector3(moveTargetPosition.x + cardInstance0.transform.localScale.x, 0f, 0f);
-        var moveTargetPosition1 = new Vector3(moveTargetPosition0.x + cardInstance0.transform.localScale.x, 0f, 0f);
+            var activeCards = cardsPool.FindAll(g => g.activeSelf);
+            if (activeCards.Count <= countFlipCardATime)
+            {
+                foreach (var card in activeCards)
+                {
+                    var m = card.GetComponent<Card>();
+                    
+                    asyncChain
+                        .JoinTween(m.MoveTo, Vector3.forward * 10f)
+                        .JoinFunc(m.SetActiveGameObject, false)
+                    ;
+                }
+                asyncChain.AddAction(() => IsFinishGameRound = true);
+                break;
+            }
+            else
+            {
+                foreach (var f in flipedCards)
+                {
+                    asyncChain
+                        .AddTween(f.Rise)
+                        .AddTween(f.ReRotate)
+                        .AddTween(f.RePut)
+                    ;
+                }
 
-        asyncChain
-                .AddTween(Move, cardInstance0.transform, moveTargetPosition0)
-                .AddTween(Move, cardInstance1.transform, moveTargetPosition1)
-            ;
+                break;
+            }
+        }
 
-        return asyncChain;
+        flipedCards.Clear();
+        asyncChain.onComplete += () => IsHandleFlipCards = false;
     }
 
-    private Tween Move(Transform cardInstance, Vector3 targetPosition)
+    private void OnDisable()
     {
-        return cardInstance
-                    .DOMove(targetPosition, 1f)
-                    .SetEase(Ease.InExpo)            
-                ;
+        OnFlipedCard -= AddToFlipedList;
     }
 }

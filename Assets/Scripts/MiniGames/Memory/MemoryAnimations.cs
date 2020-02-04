@@ -4,7 +4,6 @@ using UnityEngine;
 public class MemoryAnimations : MonoBehaviour
 {
     [SerializeField] private Animator cameraAnimator;
-
     public AsyncState StartCutScene()
     {
         return Planner.Chain()
