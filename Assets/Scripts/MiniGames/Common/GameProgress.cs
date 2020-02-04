@@ -5,9 +5,14 @@ namespace MiniGames.Common
 {
     public class GameProgress : MonoBehaviour
     {
+        [SerializeField] private ProgressBar progressBar;
+
+        private int progressMax;
+
         public void ResetProgress(int count)
         {
-            // TODO: reset progress to zero. Set progress max
+            progressBar.SetFill(0f);
+            progressMax = count;
         }
 
         public AsyncState IncrementProgress()
@@ -15,6 +20,14 @@ namespace MiniGames.Common
             return Planner.Chain()
                     // TODO: run progress animation, await finish
                     .AddTimeout(1f)
+                ;
+        }
+
+        public AsyncState ShowProgressBar()
+        {
+            return Planner.Chain()
+                    .AddFunc(progressBar.Show)
+                    .AddAction(ResetProgress, 0)
                 ;
         }
     }
