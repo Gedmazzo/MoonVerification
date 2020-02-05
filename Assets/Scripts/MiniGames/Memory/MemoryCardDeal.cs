@@ -9,6 +9,8 @@ public class MemoryCardDeal : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private int countFlipCardATime = 2;
 
+    private DifficultyController difficultyController;
+
     public bool IsFinishGameRound { get; private set; }
 
     public static bool IsDealing { get; private set; }
@@ -25,6 +27,11 @@ public class MemoryCardDeal : MonoBehaviour
     private List<Card> flipedCards = new List<Card>();
 
     private Texture2D[] images;
+
+    public void SetDifficultyController(DifficultyController controler)
+    {
+        difficultyController = controler;
+    }
 
     public void SetImages(Texture2D[] images)
     {
@@ -71,6 +78,7 @@ public class MemoryCardDeal : MonoBehaviour
             movePosition += Vector3.right;
         }
 
+        asyncChain.AddFunc(difficultyController.ShowCardsInBeginning, cardsPool);
         asyncChain.AddAction(Debug.Log, "Dealing finished");
         asyncChain.onComplete += () => IsDealing = false;
         return asyncChain;

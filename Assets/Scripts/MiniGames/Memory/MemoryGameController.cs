@@ -13,6 +13,7 @@ namespace MiniGames.Memory
             // game login entry point
             return Planner.Chain()
                     .AddAction(memoryCardDeal.SetImages, gameModel.images)
+                    .AddAction(memoryCardDeal.SetDifficultyController, gameModel.GetController())
                     .AddFunc(memoryCardDeal.CardDealing, gameModel.numberOfCardPairs)
                     .AddAwait(AwaitFunc)
                 ;

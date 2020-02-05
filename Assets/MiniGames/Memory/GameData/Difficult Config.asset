@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a52b682b883b5d4895eff1a2d19e7e4, type: 3}
   m_Name: Difficult Config
   m_EditorClassIdentifier: 
-  isShowCardInBeginningRound: 0
-  isHpHandle: 0
+  isShowCardInBeginningRound: 1
+  showTime: 5
+  isHPHandle: 0
+  maxHP: 0
+  isShufflingCards: 0
+  maxCountErrors: 0
   isCardWithoudPairs: 0

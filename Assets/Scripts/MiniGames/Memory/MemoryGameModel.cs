@@ -9,5 +9,17 @@ namespace MiniGames.Memory
         public float timeCardShow;
         public Texture2D[] images;
         public int numberOfRounds;
+
+        private DifficultyController difficultyController;
+
+        public void SetDifficultyController(DifficultyController difficultyController)
+        {
+            this.difficultyController = difficultyController;   
+        }
+
+        public DifficultyController GetController()
+        {
+            return difficultyController;
+        }
     }
 }
