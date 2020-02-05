@@ -9,6 +9,7 @@ namespace MiniGames.Memory
         public float timeCardShow;
         public Texture2D[] images;
         public int numberOfRounds;
+        public int helpCount;
 
         private DifficultyController difficultyController;
 

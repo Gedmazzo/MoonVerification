@@ -20,3 +20,4 @@ MonoBehaviour:
   - {fileID: 2800000, guid: e7c0d5cd85354904cac14c725c46206e, type: 3}
   - {fileID: 2800000, guid: 97ecc45fd0a2c654da63b464b1854c26, type: 3}
   numberOfRounds: 5
+  helpCount: 1

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MemoryCardDeal : MonoBehaviour
 {
@@ -11,11 +12,12 @@ public class MemoryCardDeal : MonoBehaviour
     [SerializeField] private CardShuffl cardShuffl;
 
     private DifficultyController difficultyController;
-
+    public Button HelpButton { get; set; }
     public bool IsFinishGameRound { get; private set; }
 
     public static bool IsDealing { get; private set; }
     public static bool IsHandleFlipCards { get; private set; }
+    public int MaxHelpCount { get; set; }
 
     public static Action<Card> OnFlipedCard;
 
@@ -54,6 +56,9 @@ public class MemoryCardDeal : MonoBehaviour
 
     public AsyncState CardDealing(int numberOfPairs)
     {
+        if (HelpButton != null)
+            HelpButton.interactable = true;
+
         IsFinishGameRound = false;
         var asyncChain = Planner.Chain();
         asyncChain.AddAction(Debug.Log, "Dealing started");
@@ -190,6 +195,31 @@ public class MemoryCardDeal : MonoBehaviour
 
         flipedCards.Clear();
         asyncChain.onComplete += () => IsHandleFlipCards = false;
+    }
+
+    public void HighlightMatcheCards()
+    {
+        var asyncChain = Planner.Chain();
+        asyncChain.AddEmpty();
+        var activeCards = cardsPool.FindAll(p => p.activeSelf);
+        for (int i = 0; i < activeCards.Count; i++)
+        {
+            var matches = activeCards.FindAll(c
+                    => c.GetComponent<Card>().GetImage()
+                    .Equals(activeCards[i].GetComponent<Card>().GetImage())
+                );
+
+            if (matches.Count >= countFlipCardATime)
+            {
+                for (int j = 0; j < countFlipCardATime; j++)
+                    asyncChain.JoinTween(matches[j].GetComponent<Card>().Hide);
+
+                MaxHelpCount--;
+                if (MaxHelpCount == 0 && HelpButton != null)
+                    HelpButton.interactable = false;
+                return;
+            }
+        }
     }
 
     private void OnDisable()
