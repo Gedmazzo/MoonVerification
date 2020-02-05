@@ -29,6 +29,7 @@ public class Card : MonoBehaviour
             return;
 
         Flip();
+        TutorialHand.onClickCard?.Invoke();
     }
 
     public void Flip()

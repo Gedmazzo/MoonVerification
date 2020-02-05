@@ -7,6 +7,7 @@ namespace MiniGames.Memory
     {
         public MemoryAnimations MemoryAnimations;
         public MemoryCardDeal memoryCardDeal;
+        public TutorialHand tutorialHand;
 
         public AsyncState RunGame(MemoryGameModel gameModel)
         {
@@ -15,6 +16,7 @@ namespace MiniGames.Memory
                     .AddAction(memoryCardDeal.SetImages, gameModel.images)
                     .AddAction(memoryCardDeal.SetDifficultyController, gameModel.GetController())
                     .AddFunc(memoryCardDeal.CardDealing, gameModel.numberOfCardPairs)
+                    .AddFunc(tutorialHand.StartTutorial)
                     .AddAwait(AwaitFunc)
                 ;
         }

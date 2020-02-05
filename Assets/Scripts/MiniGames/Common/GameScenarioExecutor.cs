@@ -9,6 +9,13 @@ namespace MiniGames.Common
         public GameProgress progress;
         public GameScenarioBase scenario;
         public string nextSceneName;
+        public bool isClearPrefs;
+
+        private void OnEnable()
+        {
+            if (isClearPrefs)
+                PlayerPrefs.DeleteAll();
+        }
 
         private void Awake()
         {
