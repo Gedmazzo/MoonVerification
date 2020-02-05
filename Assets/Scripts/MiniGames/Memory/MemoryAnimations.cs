@@ -8,13 +8,27 @@ public class MemoryAnimations : MonoBehaviour
     {
         return Planner.Chain()
                 .AddAction(() => cameraAnimator.SetTrigger("CameraRotate"))
-                .AddAwait(IsCutSceneFinished)
+                .AddAwait(IsIntroCutSceneFinished)
             ;
     }
 
-    private void IsCutSceneFinished(AsyncStateInfo state)
+    public AsyncState EndCutScene()
+    {
+        return Planner.Chain()
+                .AddAction(() => cameraAnimator.SetTrigger("CameraRotate"))
+                .AddAwait(IsOutroCutSceneFinished)
+            ;
+    }
+
+    private void IsIntroCutSceneFinished(AsyncStateInfo state)
     {
         state.IsComplete = cameraAnimator.GetCurrentAnimatorStateInfo(0).IsName("CameraRotate")
+            && cameraAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;
+    }
+
+    private void IsOutroCutSceneFinished(AsyncStateInfo state)
+    {
+        state.IsComplete = cameraAnimator.GetCurrentAnimatorStateInfo(0).IsName("CameraRotateReverse")
             && cameraAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;
     }
 }

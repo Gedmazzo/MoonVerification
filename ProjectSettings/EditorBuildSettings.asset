@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/MiniGames/Memory/Memory.unity
+    guid: ae4253a80532ee84eba8442d302f8b08
+  - enabled: 1
+    path: Assets/Reward/Reward.unity
+    guid: 6558e4e8b0a278b4e81305275d382d0f
   m_configObjects: {}

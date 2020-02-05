@@ -1,5 +1,6 @@
 ﻿using Moon.Asyncs;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MiniGames.Common
 {
@@ -28,7 +29,7 @@ namespace MiniGames.Common
         private void LoadNextScene()
         {
             // TODO: fade in
-            // loading scene
+            SceneManager.LoadScene(nextSceneName);
             // TODO: fade out
         }
     }

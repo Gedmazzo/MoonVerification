@@ -53,7 +53,7 @@ namespace MiniGames.Memory
         {
             return Planner.Chain()
                     .AddAction(Debug.Log, "start outro")
-                    .AddFunc(controller.MemoryAnimations.StartCutScene)
+                    .AddFunc(controller.MemoryAnimations.EndCutScene)
                     .AddAction(Debug.Log, "outro finished")
                 ;
         }
