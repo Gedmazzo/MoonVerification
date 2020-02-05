@@ -8,6 +8,7 @@ public class DifficultConfig : ScriptableObject
 
     public bool isHPHandle;
     public int maxHP;
+    public GameObject hpPrefab;
 
     public bool isShufflingCards;
     public int maxCountErrors;

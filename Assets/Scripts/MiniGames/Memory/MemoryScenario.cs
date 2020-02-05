@@ -40,6 +40,7 @@ namespace MiniGames.Memory
             {
                 asyncChain
                         .AddAction(defaultGameModel.SetDifficultyController, difficultyController)
+                        .AddAction(() => defaultGameModel.GetController().HandleHP())
                         .AddFunc(controller.RunGame, defaultGameModel)
                         .AddFunc(progress.IncrementProgress)
                     ;

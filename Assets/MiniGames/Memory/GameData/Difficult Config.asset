@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isShowCardInBeginningRound: 1
   showTime: 5
-  isHPHandle: 0
-  maxHP: 0
+  isHPHandle: 1
+  maxHP: 3
+  hpPrefab: {fileID: 6780829407205423473, guid: c893470fad237704d9dec52fc1163785,
+    type: 3}
   isShufflingCards: 0
   maxCountErrors: 0
   isCardWithoudPairs: 0

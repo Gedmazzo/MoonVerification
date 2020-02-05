@@ -5,6 +5,8 @@ using UnityEngine;
 public class DifficultyController : MonoBehaviour
 {
     [SerializeField] DifficultConfig config;
+    [SerializeField] HPManager hpManager;
+
     public DifficultConfig Config { get => config; }
 
     public AsyncState ShowCardsInBeginning(List<GameObject> cardsPool)
@@ -34,6 +36,16 @@ public class DifficultyController : MonoBehaviour
                 .JoinTween(card.RePut);
         }
 
+        return asyncChain;
+    }
+
+    public AsyncState HandleHP()
+    {
+        var asyncChain = Planner.Chain();
+        if (!config.isHPHandle)
+            return asyncChain.AddEmpty();
+
+        asyncChain.AddFunc(hpManager.Execute, config.hpPrefab, config.maxHP);
         return asyncChain;
     }
 }

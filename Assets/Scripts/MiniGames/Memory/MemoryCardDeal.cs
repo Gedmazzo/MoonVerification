@@ -112,12 +112,13 @@ public class MemoryCardDeal : MonoBehaviour
                 if (matches[0].Equals(flipedCards[j]))
                     matches.Add(flipedCards[j]);
             }
-
+            var isMatch = false;
             if (matches.Count > 1)
             {
                 flipedCards = flipedCards.Except(matches).ToList();
                 foreach (var m in matches)
                 {
+                    isMatch = true;
                     asyncChain
                         .JoinTween(m.Hide)
                         .JoinTween(m.MoveTo, Vector3.forward * 10f)
@@ -143,6 +144,8 @@ public class MemoryCardDeal : MonoBehaviour
             }
             else
             {
+                if (!isMatch)
+                    asyncChain.AddAction(() => HPManager.onDecrease?.Invoke());
                 foreach (var f in flipedCards)
                 {
                     asyncChain

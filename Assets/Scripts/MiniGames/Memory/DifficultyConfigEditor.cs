@@ -26,6 +26,7 @@ public class DifficultyConfigEditor : Editor
         targetObject.isHPHandle = EditorGUILayout.Toggle("Is HP Handle", targetObject.isHPHandle);
         GUI.enabled = targetObject.isHPHandle;
         targetObject.maxHP = EditorGUILayout.IntField("Max HP", targetObject.maxHP);
+        targetObject.hpPrefab = (GameObject)EditorGUILayout.ObjectField((Object)targetObject.hpPrefab, typeof(Object), true);
 
         GUI.enabled = true;
 
