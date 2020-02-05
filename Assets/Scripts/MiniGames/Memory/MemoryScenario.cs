@@ -8,7 +8,7 @@ namespace MiniGames.Memory
     {
         public MemoryGameController controller;
 
-        //TODO: select gameModel with difficulty controller class
+        public DifficultyController difficultyController;
         public MemoryGameModel defaultGameModel;
 
         protected override AsyncState OnExecute()

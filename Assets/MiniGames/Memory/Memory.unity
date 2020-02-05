@@ -430,6 +430,7 @@ GameObject:
   - component: {fileID: 680788875}
   - component: {fileID: 680788878}
   - component: {fileID: 680788877}
+  - component: {fileID: 680788879}
   m_Layer: 0
   m_Name: MemoryGameController
   m_TagString: Untagged
@@ -491,7 +492,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 680788875}
+  difficultyController: {fileID: 680788879}
   defaultGameModel: {fileID: 11400000, guid: 9fd0ef3298aba694d95cb84382fa1172, type: 2}
+--- !u!114 &680788879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680788874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7366ecad7ce3f14b99987abf86b5968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &870871818
 GameObject:
   m_ObjectHideFlags: 0
