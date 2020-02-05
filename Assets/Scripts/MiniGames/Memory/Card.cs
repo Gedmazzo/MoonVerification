@@ -73,6 +73,16 @@ public class Card : MonoBehaviour
         return tween;
     }
 
+    public Tween MoveTo(Vector3 movePosition, float duration, Ease easyType)
+    {
+        IsTweenRunning = true;
+        var tween = transform
+                    .DOMove(movePosition, 1f)
+                    .SetEase(easyType);
+        tween.onComplete += () => IsTweenRunning = false;
+        return tween;
+    }
+
     public Tween Rise()
     {
         IsTweenRunning = true;

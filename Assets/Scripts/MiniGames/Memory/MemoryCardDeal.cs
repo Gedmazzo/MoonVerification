@@ -8,6 +8,7 @@ public class MemoryCardDeal : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private int countFlipCardATime = 2;
+    [SerializeField] private CardShuffl cardShuffl;
 
     private DifficultyController difficultyController;
 
@@ -28,9 +29,21 @@ public class MemoryCardDeal : MonoBehaviour
 
     private Texture2D[] images;
 
+    private void SetCardShufflData()
+    {
+        if (cardShuffl != null)
+        {
+            if (!difficultyController.Config.isShufflingCards)
+                CardShuffl.onErrorCard = null;
+            cardShuffl.SetMaxErrors(difficultyController.Config.maxCountErrors);
+            cardShuffl.Cards = cardsPool;
+        }
+    }
+
     public void SetDifficultyController(DifficultyController controler)
     {
         difficultyController = controler;
+        SetCardShufflData();
     }
 
     public void SetImages(Texture2D[] images)
@@ -145,7 +158,10 @@ public class MemoryCardDeal : MonoBehaviour
             else
             {
                 if (!isMatch)
+                {
                     asyncChain.AddAction(() => HPManager.onDecrease?.Invoke());
+                    asyncChain.AddAction(() => CardShuffl.onErrorCard?.Invoke());
+                }
                 foreach (var f in flipedCards)
                 {
                     asyncChain

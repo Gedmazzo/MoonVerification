@@ -18,6 +18,6 @@ MonoBehaviour:
   maxHP: 3
   hpPrefab: {fileID: 6780829407205423473, guid: c893470fad237704d9dec52fc1163785,
     type: 3}
-  isShufflingCards: 0
-  maxCountErrors: 0
+  isShufflingCards: 1
+  maxCountErrors: 1
   isCardWithoudPairs: 0
