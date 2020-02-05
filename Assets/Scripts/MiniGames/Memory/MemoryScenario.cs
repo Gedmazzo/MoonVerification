@@ -8,7 +8,7 @@ namespace MiniGames.Memory
     {
         public MemoryGameController controller;
 
-        //TODO: select gameModel with difficulty controller class
+        public DifficultyController difficultyController;
         public MemoryGameModel defaultGameModel;
 
         protected override AsyncState OnExecute()
@@ -23,9 +23,8 @@ namespace MiniGames.Memory
         private AsyncState Intro()
         {
             return Planner.Chain()
-                    // TODO: intro cut scene. Run camera animation. Await animation finish
                     .AddAction(Debug.Log, "start intro")
-                    .AddTimeout(1f)
+                    .AddFunc(controller.MemoryAnimations.StartCutScene)
                     .AddAction(Debug.Log, "intro finished")
                 ;
         }
@@ -34,26 +33,29 @@ namespace MiniGames.Memory
         {
             var asyncChain = Planner.Chain();
             asyncChain.AddAction(Debug.Log, "game started");
-            // TODO: implement game circle using game controller
-            // TODO: move hardcoded "5" count to game config
-            for (var i = 0; i < 5; i++)
+            asyncChain.AddFunc(progress.ShowProgressBar);
+            asyncChain.AddAction(() => progress.NumberOfRounds = defaultGameModel.numberOfRounds);
+
+            for (var i = 0; i < defaultGameModel.numberOfRounds; i++)
             {
                 asyncChain
+                        .AddAction(defaultGameModel.SetDifficultyController, difficultyController)
+                        .AddAction(() => defaultGameModel.GetController().HandleHP())
                         .AddFunc(controller.RunGame, defaultGameModel)
                         .AddFunc(progress.IncrementProgress)
                     ;
             }
 
+            asyncChain.AddFunc(progress.CloseProgressBar);
             asyncChain.AddAction(Debug.Log, "game finished");
             return asyncChain;
         }
 
         private AsyncState Outro()
         {
-            // TODO: outro cut scene. Run camera back to origin position. Await animation finish
             return Planner.Chain()
                     .AddAction(Debug.Log, "start outro")
-                    .AddTimeout(1f)
+                    .AddFunc(controller.MemoryAnimations.EndCutScene)
                     .AddAction(Debug.Log, "outro finished")
                 ;
         }

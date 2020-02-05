@@ -1,5 +1,6 @@
 ﻿using Moon.Asyncs;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MiniGames.Common
 {
@@ -8,6 +9,13 @@ namespace MiniGames.Common
         public GameProgress progress;
         public GameScenarioBase scenario;
         public string nextSceneName;
+        public bool isClearPrefs;
+
+        private void OnEnable()
+        {
+            if (isClearPrefs)
+                PlayerPrefs.DeleteAll();
+        }
 
         private void Awake()
         {
@@ -28,7 +36,7 @@ namespace MiniGames.Common
         private void LoadNextScene()
         {
             // TODO: fade in
-            // loading scene
+            SceneManager.LoadScene(nextSceneName);
             // TODO: fade out
         }
     }

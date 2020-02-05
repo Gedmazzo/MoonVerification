@@ -5,17 +5,29 @@ namespace MiniGames.Common
 {
     public class GameProgress : MonoBehaviour
     {
-        public void ResetProgress(int count)
-        {
-            // TODO: reset progress to zero. Set progress max
-        }
+        [SerializeField] private ProgressBar progressBar;
+
+        public float NumberOfRounds { private get; set; }
 
         public AsyncState IncrementProgress()
         {
             return Planner.Chain()
-                    // TODO: run progress animation, await finish
-                    .AddTimeout(1f)
+                    .AddTween(progressBar.SetCurrentValue, 1f / NumberOfRounds)
                 ;
+        }
+
+        public AsyncState ShowProgressBar()
+        {
+            return Planner.Chain()
+                    .AddFunc(progressBar.Show)
+                ;
+        }
+
+        public AsyncState CloseProgressBar()
+        {
+            return Planner.Chain()
+                        .AddFunc(progressBar.Close)
+                    ;
         }
     }
 }
