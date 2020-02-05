@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using Moon.Asyncs;
+using System;
 using UnityEngine;
 
 public class Card : MonoBehaviour
@@ -52,6 +53,11 @@ public class Card : MonoBehaviour
     public void SetImage(Texture2D image)
     {
         faceImage.material.mainTexture = image;
+    }
+
+    public Texture2D GetImage()
+    {
+        return (Texture2D)faceImage.material.mainTexture;
     }
 
     public AsyncState SetActiveGameObject(bool isActive)

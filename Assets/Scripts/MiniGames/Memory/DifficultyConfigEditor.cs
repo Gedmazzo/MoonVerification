@@ -36,7 +36,7 @@ public class DifficultyConfigEditor : Editor
 
         GUI.enabled = true;
 
-        targetObject.isCardWithoudPairs = EditorGUILayout.Toggle("IsCardWithoudPairs", targetObject.isCardWithoudPairs);
+        targetObject.isCardWithoutPairs = EditorGUILayout.Toggle("IsCardWithoudPairs", targetObject.isCardWithoutPairs);
 
         EditorGUILayout.EndVertical();
 

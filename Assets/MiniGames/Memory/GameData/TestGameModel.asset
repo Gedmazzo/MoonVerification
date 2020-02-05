@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 416d481cdf764001aa8c1ffbe2c5ef06, type: 3}
   m_Name: TestGameModel
   m_EditorClassIdentifier: 
-  numberOfCardPairs: 3
+  numberOfCardPairs: 1
   timeCardShow: 2
   images:
   - {fileID: 2800000, guid: 9c6a337b340dc7a499fc46ae8d9ca95f, type: 3}

@@ -13,5 +13,5 @@ public class DifficultConfig : ScriptableObject
     public bool isShufflingCards;
     public int maxCountErrors;
 
-    public bool isCardWithoudPairs;
+    public bool isCardWithoutPairs;
 }

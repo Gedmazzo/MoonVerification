@@ -20,4 +20,4 @@ MonoBehaviour:
     type: 3}
   isShufflingCards: 1
   maxCountErrors: 1
-  isCardWithoudPairs: 0
+  isCardWithoutPairs: 1

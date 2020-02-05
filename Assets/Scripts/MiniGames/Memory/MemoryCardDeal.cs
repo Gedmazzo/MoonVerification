@@ -35,6 +35,7 @@ public class MemoryCardDeal : MonoBehaviour
         {
             if (!difficultyController.Config.isShufflingCards)
                 CardShuffl.onErrorCard = null;
+
             cardShuffl.SetMaxErrors(difficultyController.Config.maxCountErrors);
             cardShuffl.Cards = cardsPool;
         }
@@ -72,7 +73,7 @@ public class MemoryCardDeal : MonoBehaviour
                 cardsPool[i].transform.rotation = instanceRotation;
 
                 card = cardsPool[i].GetComponent<Card>();
-                card.SetImage(GetImage());
+                card.SetImage(GetImage(i));
                 card.gameObject.SetActive(true);
 
                 asyncChain.AddFunc(card.MoveToTable, movePosition);
@@ -85,7 +86,7 @@ public class MemoryCardDeal : MonoBehaviour
             cardsPool.Add(cardObj);
 
             card = cardObj.GetComponent<Card>();
-            card.SetImage(GetImage());
+            card.SetImage(GetImage(i));
             asyncChain.AddFunc(card.MoveToTable, movePosition);
 
             movePosition += Vector3.right;
@@ -97,9 +98,21 @@ public class MemoryCardDeal : MonoBehaviour
         return asyncChain;
     }
 
-    private Texture2D GetImage()
+    private Texture2D GetImage(int index)
     {
-        return images[UnityEngine.Random.Range(0, images.Length)];
+        Texture2D image = null;
+        if (difficultyController.Config.isCardWithoutPairs)
+            return images[UnityEngine.Random.Range(0, images.Length)];
+
+        if (cardsPool.Count == 1 || index < cardsPool.Count / 2)
+            image = images[UnityEngine.Random.Range(0, images.Length)];
+        else
+        {
+            var ind = UnityEngine.Random.Range((index - cardsPool.Count / 2), cardsPool.Count / 2);
+            image = cardsPool[ind].GetComponent<Card>().GetImage();
+        }
+
+        return image;
     }
 
     private void AddToFlipedList(Card card)
