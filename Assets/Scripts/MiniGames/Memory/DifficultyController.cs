@@ -21,7 +21,7 @@ public class DifficultyController : MonoBehaviour
             asyncChain
                 .JoinTween(card.Rise)
                 .JoinTween(card.Rotate)
-                .JoinTween(card.Put);
+                ;
         }
 
         asyncChain.AddAction(Debug.Log, "Show");
@@ -31,7 +31,6 @@ public class DifficultyController : MonoBehaviour
         {
             var card = cardP.GetComponent<Card>();
             asyncChain
-                .JoinTween(card.Rise)
                 .JoinTween(card.ReRotate)
                 .JoinTween(card.RePut);
         }

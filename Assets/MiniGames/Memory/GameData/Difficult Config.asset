@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Difficult Config
   m_EditorClassIdentifier: 
   isShowCardInBeginningRound: 1
-  showTime: 5
+  showTime: 2
   isHPHandle: 1
   maxHP: 3
   hpPrefab: {fileID: 6780829407205423473, guid: c893470fad237704d9dec52fc1163785,
     type: 3}
   isShufflingCards: 1
   maxCountErrors: 1
-  isCardWithoutPairs: 0
+  isCardWithoutPairs: 1

@@ -94,9 +94,9 @@ public class Card : MonoBehaviour
     {
         IsTweenRunning = true;
         originPosition = transform.position;
-        return transform
-                .DOMove(transform.position + Vector3.up, 1f)
-            ;
+        var tween = transform
+                .DOMove(transform.position + Vector3.up, 1f);
+        return tween;
     }
 
     public Tween ReRotate()
