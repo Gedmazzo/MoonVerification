@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3254635424235015803}
   - component: {fileID: -4233402076905320857}
   - component: {fileID: 4485265435604535856}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 1207595151400032534}
   - component: {fileID: 3498283253252143282}
   - component: {fileID: 640247762460181393}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
