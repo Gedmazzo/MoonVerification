@@ -132,76 +132,80 @@ public class MemoryCardDeal : MonoBehaviour
     {
         flipedCards.Add(card);
         if (flipedCards.Count == countFlipCardATime)
-        {
             HandleFlipedCards();
-        }
     }
 
     private void HandleFlipedCards()
     {
-        IsHandleFlipCards = true;
         var asyncChain = Planner.Chain();
         asyncChain.AddAwait((AsyncStateInfo state) => state.IsComplete = !Card.IsTweenRunning);
-        for (int i = 0; i < flipedCards.Count; i++)
-        {
-            var matches = new List<Card>();
-            matches.Add(flipedCards[i]);
-            for (int j = i + 1; j < flipedCards.Count; j++)
-            {
-                if (matches[0].Equals(flipedCards[j]))
-                    matches.Add(flipedCards[j]);
-            }
-            var isMatch = false;
-            if (matches.Count > 1)
-            {
-                flipedCards = flipedCards.Except(matches).ToList();
-                foreach (var m in matches)
-                {
-                    isMatch = true;
-                    asyncChain
-                        .JoinTween(m.Shake)
-                        .JoinTween(m.MoveTo, new Vector3(0f, 2.86f, 10f))
-                        .JoinFunc(m.SetActiveGameObject, false)
-                    ;
-                }
-            }
 
-            var activeCards = cardsPool.FindAll(g => g.activeSelf);
-            if (activeCards.Count <= countFlipCardATime)
+        IsHandleFlipCards = true;
+        var matches = new Dictionary<Card, List<Card>>();
+        foreach (var fCard in flipedCards)
+        {
+            if (!matches.ContainsKey(fCard))
+                matches.Add(fCard, flipedCards.FindAll(c => c.Equals(fCard)));
+        }
+
+        var isMatch = false;
+        foreach (var mCard in matches.Values)
+        {
+            if (mCard.Count > 1)
             {
-                foreach (var card in activeCards)
-                {
-                    var m = card.GetComponent<Card>();
-                    
-                    asyncChain
-                        .JoinTween(m.MoveTo, new Vector3(0f, 2.86f, 10f))
-                        .JoinFunc(m.SetActiveGameObject, false)
-                    ;
-                }
-                asyncChain.AddAction(() => IsFinishGameRound = true);
-                break;
+                isMatch = true;
+                mCard.ForEach((Card card)
+                    => asyncChain
+                            .JoinTween(card.Shake)
+                            .JoinTween(card.MoveTo, new Vector3(0f, 2.86f, 10f))
+                            .JoinFunc(card.SetActiveGameObject, false)
+                      );
             }
             else
             {
-                if (!isMatch)
-                {
-                    asyncChain.AddAction(() => HPManager.onDecrease?.Invoke());
-                    asyncChain.AddAction(() => CardShuffl.onErrorCard?.Invoke());
-                }
-                foreach (var f in flipedCards)
-                {
-                    asyncChain
-                        .AddTween(f.Rise)
-                        .AddTween(f.ReRotate)
-                        .AddTween(f.RePut)
-                    ;
-                }
-
-                break;
+                asyncChain
+                    .AddTween(mCard[0].Rise)
+                    .AddTween(mCard[0].ReRotate)
+                    .AddTween(mCard[0].RePut)
+                ;
             }
         }
 
-        flipedCards.Clear();
+        if (!isMatch)
+        {
+            asyncChain.AddAction(() => HPManager.onDecrease?.Invoke());
+            asyncChain.AddAction(() => CardShuffl.onErrorCard?.Invoke());
+        }
+
+        asyncChain.AddAction(() =>
+        {
+            var activeCards = cardsPool.FindAll(card => card.activeSelf);
+
+            var isMatchesExists = false;
+            foreach (var aCard in activeCards)
+            {
+                if (activeCards.FindAll(c => c.GetComponent<Card>().Equals(aCard.GetComponent<Card>())).Count > 1)
+                    isMatchesExists = true;
+            }
+
+            if (!isMatchesExists)
+            {
+                foreach (var card in activeCards)
+                {
+                    var cardComponent = card.GetComponent<Card>();
+                    asyncChain
+                            .JoinTween(cardComponent.MoveTo, new Vector3(0f, 2.86f, 10f))
+                            .JoinFunc(cardComponent.SetActiveGameObject, false)
+                        ;
+
+                    asyncChain.AddFunc(() => cardComponent.SetActiveGameObject(false));
+                }
+                asyncChain.AddAction(() => IsFinishGameRound = true);
+            }
+        });
+
+        asyncChain.AddAwait((AsyncStateInfo state) => state.IsComplete = !Card.IsTweenRunning);
+        asyncChain.AddAction(flipedCards.Clear);
         asyncChain.onComplete += () => IsHandleFlipCards = false;
     }
 
