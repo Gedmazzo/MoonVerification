@@ -2,90 +2,10 @@ fileFormatVersion: 2
 guid: 6801762d7c82dc34ca51471ca2c6c808
 ModelImporter:
   serializedVersion: 19300
-  internalIDToNameTable:
-  - first:
-      1: 100000
-    second: //RootNode
-  - first:
-      1: 100002
-    second: Airship
-  - first:
-      1: 100004
-    second: ScrewL
-  - first:
-      1: 100006
-    second: ScrewMid
-  - first:
-      1: 100008
-    second: ScrewR
-  - first:
-      4: 400000
-    second: //RootNode
-  - first:
-      4: 400002
-    second: Airship
-  - first:
-      4: 400004
-    second: ScrewL
-  - first:
-      4: 400006
-    second: ScrewMid
-  - first:
-      4: 400008
-    second: ScrewR
-  - first:
-      21: 2100000
-    second: Airship_M
-  - first:
-      23: 2300000
-    second: Airship
-  - first:
-      23: 2300002
-    second: ScrewL
-  - first:
-      23: 2300004
-    second: ScrewMid
-  - first:
-      23: 2300006
-    second: ScrewR
-  - first:
-      33: 3300000
-    second: Airship
-  - first:
-      33: 3300002
-    second: ScrewL
-  - first:
-      33: 3300004
-    second: ScrewMid
-  - first:
-      33: 3300006
-    second: ScrewR
-  - first:
-      43: 4300000
-    second: ScrewMid
-  - first:
-      43: 4300002
-    second: ScrewL
-  - first:
-      43: 4300004
-    second: ScrewR
-  - first:
-      43: 4300006
-    second: Airship
-  - first:
-      74: 7400000
-    second: Take 001
-  - first:
-      95: 9500000
-    second: //RootNode
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Airship_M
-    second: {fileID: 2100000, guid: e4b6924f686c8e34f8689bbb59b02f9e, type: 2}
+  internalIDToNameTable: []
+  externalObjects: {}
   materials:
-    materialImportMode: 1
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -111,18 +31,18 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1.7
+    globalScale: 5
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -134,10 +54,10 @@ ModelImporter:
     minBoneWeight: 0.001
     meshOptimizationFlags: -1
     indexFormat: 0
-    secondaryUVAngleDistortion: 8
-    secondaryUVAreaDistortion: 15.000001
+    secondaryUVAngleDistortion: 24
+    secondaryUVAreaDistortion: 15
     secondaryUVHardAngle: 88
-    secondaryUVPackMargin: 4
+    secondaryUVPackMargin: 20
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
@@ -160,10 +80,10 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1.7
+    globalScale: 5
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1

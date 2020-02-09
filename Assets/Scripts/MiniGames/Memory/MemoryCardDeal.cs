@@ -64,7 +64,8 @@ public class MemoryCardDeal : MonoBehaviour
         asyncChain.AddAction(Debug.Log, "Dealing started");
         IsDealing = true;
 
-        var movePosition = new Vector3(-numberOfPairs, .1f, 0f);
+        var movePosition = new Vector3(-numberOfPairs / 2f, 2.86f, 0f);
+        var moveOffset = Vector3.right * 0.5f;
         for (var i = 0; i < numberOfPairs * 2; i++)
         {
             Card card = null;
@@ -83,7 +84,7 @@ public class MemoryCardDeal : MonoBehaviour
 
                 asyncChain.AddFunc(card.MoveToTable, movePosition);
 
-                movePosition += Vector3.right;
+                movePosition += moveOffset;
                 continue;
             }
 
@@ -94,7 +95,7 @@ public class MemoryCardDeal : MonoBehaviour
             card.SetImage(GetImage(i));
             asyncChain.AddFunc(card.MoveToTable, movePosition);
 
-            movePosition += Vector3.right;
+            movePosition += moveOffset;
         }
 
         asyncChain.AddFunc(difficultyController.ShowCardsInBeginning, cardsPool);

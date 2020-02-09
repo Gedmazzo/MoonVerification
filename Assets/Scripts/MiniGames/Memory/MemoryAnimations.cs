@@ -7,7 +7,7 @@ public class MemoryAnimations : MonoBehaviour
     public AsyncState StartCutScene()
     {
         return Planner.Chain()
-                .AddAction(() => cameraAnimator.SetTrigger("CameraRotate"))
+                .AddTimeout(1f)
                 .AddAwait(IsIntroCutSceneFinished)
             ;
     }
@@ -15,20 +15,20 @@ public class MemoryAnimations : MonoBehaviour
     public AsyncState EndCutScene()
     {
         return Planner.Chain()
-                .AddAction(() => cameraAnimator.SetTrigger("CameraRotate"))
+                .AddAction(() => cameraAnimator.SetTrigger("CameraEnd"))
                 .AddAwait(IsOutroCutSceneFinished)
             ;
     }
 
     private void IsIntroCutSceneFinished(AsyncStateInfo state)
     {
-        state.IsComplete = cameraAnimator.GetCurrentAnimatorStateInfo(0).IsName("CameraRotate")
+        state.IsComplete = cameraAnimator.GetCurrentAnimatorStateInfo(0).IsName("Camera_Start")
             && cameraAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;
     }
 
     private void IsOutroCutSceneFinished(AsyncStateInfo state)
     {
-        state.IsComplete = cameraAnimator.GetCurrentAnimatorStateInfo(0).IsName("CameraRotateReverse")
+        state.IsComplete = cameraAnimator.GetCurrentAnimatorStateInfo(0).IsName("Camera_End")
             && cameraAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;
     }
 }
