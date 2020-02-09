@@ -12,6 +12,7 @@ public class MemoryCardDeal : MonoBehaviour
     [SerializeField] private CardShuffl cardShuffl;
 
     private DifficultyController difficultyController;
+    private AudioManager audioManager;
     public Button HelpButton { get; set; }
     public bool IsFinishGameRound { get; private set; }
 
@@ -41,6 +42,11 @@ public class MemoryCardDeal : MonoBehaviour
             cardShuffl.SetMaxErrors(difficultyController.Config.maxCountErrors);
             cardShuffl.Cards = cardsPool;
         }
+    }
+
+    public void SetAudioManager(AudioManager audioManager)
+    {
+        this.audioManager = audioManager;
     }
 
     public void SetDifficultyController(DifficultyController controler)
@@ -81,7 +87,7 @@ public class MemoryCardDeal : MonoBehaviour
                 card = cardsPool[i].GetComponent<Card>();
                 card.SetImage(GetImage(i));
                 card.gameObject.SetActive(true);
-
+                card.AudioManager = audioManager;
                 asyncChain.AddFunc(card.MoveToTable, movePosition);
 
                 movePosition += moveOffset;
@@ -93,6 +99,7 @@ public class MemoryCardDeal : MonoBehaviour
 
             card = cardObj.GetComponent<Card>();
             card.SetImage(GetImage(i));
+            card.AudioManager = audioManager;
             asyncChain.AddFunc(card.MoveToTable, movePosition);
 
             movePosition += moveOffset;

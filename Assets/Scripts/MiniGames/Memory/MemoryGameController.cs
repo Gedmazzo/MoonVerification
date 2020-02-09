@@ -6,6 +6,7 @@ namespace MiniGames.Memory
 {
     public class MemoryGameController : MonoBehaviour
     {
+        public AudioManager audioManager;
         public MemoryAnimations MemoryAnimations;
         public MemoryCardDeal memoryCardDeal;
         public TutorialHand tutorialHand;
@@ -17,6 +18,7 @@ namespace MiniGames.Memory
             return Planner.Chain()
                     .AddAction(memoryCardDeal.SetImages, gameModel.images)
                     .AddAction(memoryCardDeal.SetDifficultyController, gameModel.GetController())
+                    .AddAction(memoryCardDeal.SetAudioManager, audioManager)
                     .AddFunc(memoryCardDeal.CardDealing, gameModel.numberOfCardPairs)
                     .AddFunc(tutorialHand.StartTutorial)
                     .AddAction(() =>
@@ -24,6 +26,7 @@ namespace MiniGames.Memory
                         if (gameModel.helpCount != 0)
                         {
                             helpButton.gameObject.SetActive(true);
+                            helpButton.onClick.AddListener(() => audioManager.Play("HelpEffect"));
                             memoryCardDeal.MaxHelpCount = gameModel.helpCount;
                             memoryCardDeal.HelpButton = helpButton;
                         }

@@ -12,6 +12,7 @@ public class Card : MonoBehaviour
 
     private bool isFliped;
     public static bool IsTweenRunning { get; private set; }
+    public AudioManager AudioManager { private get; set; }
 
     private void OnEnable()
     {
@@ -35,6 +36,8 @@ public class Card : MonoBehaviour
     public void Flip()
     {
         isFliped = true;
+        AudioManager.Play("ClickOnCard");
+
         var asyncChain = Planner.Chain();
         asyncChain
             .AddTween(Rise)
