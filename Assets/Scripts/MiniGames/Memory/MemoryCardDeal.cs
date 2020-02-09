@@ -70,7 +70,7 @@ public class MemoryCardDeal : MonoBehaviour
         {
             Card card = null;
 
-            var instancePosition = Vector3.forward * 10f;
+            var instancePosition = new Vector3(0f, 2.86f, 10f);
             var instanceRotation = cardPrefab.transform.rotation;
 
             if (cardsPool.Count > i && !cardsPool[i].activeSelf)
@@ -152,8 +152,8 @@ public class MemoryCardDeal : MonoBehaviour
                 {
                     isMatch = true;
                     asyncChain
-                        .JoinTween(m.Hide)
-                        .JoinTween(m.MoveTo, Vector3.forward * 10f)
+                        .JoinTween(m.Shake)
+                        .JoinTween(m.MoveTo, new Vector3(0f, 2.86f, 10f))
                         .JoinFunc(m.SetActiveGameObject, false)
                     ;
                 }
@@ -167,7 +167,7 @@ public class MemoryCardDeal : MonoBehaviour
                     var m = card.GetComponent<Card>();
                     
                     asyncChain
-                        .JoinTween(m.MoveTo, Vector3.forward * 10f)
+                        .JoinTween(m.MoveTo, new Vector3(0f, 2.86f, 10f))
                         .JoinFunc(m.SetActiveGameObject, false)
                     ;
                 }
@@ -213,7 +213,7 @@ public class MemoryCardDeal : MonoBehaviour
             if (matches.Count >= countFlipCardATime)
             {
                 for (int j = 0; j < countFlipCardATime; j++)
-                    asyncChain.JoinTween(matches[j].GetComponent<Card>().Hide);
+                    asyncChain.JoinTween(matches[j].GetComponent<Card>().Shake);
 
                 MaxHelpCount--;
                 if (MaxHelpCount == 0 && HelpButton != null)
