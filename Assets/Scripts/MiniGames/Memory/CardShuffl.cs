@@ -60,8 +60,8 @@ public class CardShuffl : MonoBehaviour
         list[i] = list[j];
         list[j] = temp;
 
-        asyncChain.AddTween(list[j].GetComponent<Card>().MoveTo, list[i].transform.position, 0.25f, Ease.InExpo);
-        asyncChain.AddTween(list[i].GetComponent<Card>().MoveTo, list[j].transform.position, 0.25f, Ease.InExpo);
+        asyncChain.AddTween(list[j].GetComponent<Card>().MoveTo, list[i].transform.position, 0.25f, Ease.InSine);
+        asyncChain.AddTween(list[i].GetComponent<Card>().MoveTo, list[j].transform.position, 0.25f, Ease.InSine);
         asyncChain.AddAwait((AsyncStateInfo state) => state.IsComplete = !Card.IsTweenRunning);
         return asyncChain;
     }

@@ -12,6 +12,7 @@ public class Card : MonoBehaviour
 
     private bool isFliped;
     public static bool IsTweenRunning { get; private set; }
+    public AudioManager AudioManager { private get; set; }
 
     private void OnEnable()
     {
@@ -35,6 +36,8 @@ public class Card : MonoBehaviour
     public void Flip()
     {
         isFliped = true;
+        AudioManager.Play("ClickOnCard");
+
         var asyncChain = Planner.Chain();
         asyncChain
             .AddTween(Rise)
@@ -84,7 +87,7 @@ public class Card : MonoBehaviour
     {
         IsTweenRunning = true;
         var tween = transform
-                    .DOMove(movePosition, 1f)
+                    .DOMove(movePosition, duration)
                     .SetEase(easyType);
         tween.onComplete += () => IsTweenRunning = false;
         return tween;
@@ -95,7 +98,7 @@ public class Card : MonoBehaviour
         IsTweenRunning = true;
         originPosition = transform.position;
         var tween = transform
-                .DOMove(transform.position + Vector3.up, 1f);
+                .DOMove(transform.position + Vector3.up * .5f, 1f);
         return tween;
     }
 
@@ -129,10 +132,10 @@ public class Card : MonoBehaviour
         return tween;
     }
 
-    public Tween Hide()
+    public Tween Shake()
     {
         IsTweenRunning = true;
-        var tween = transform.DOShakeRotation(1f);
+        var tween = transform.DOPunchRotation(Vector3.up * 30f, 1f);
         tween.onComplete += () => IsTweenRunning = false;
         return tween;
     }

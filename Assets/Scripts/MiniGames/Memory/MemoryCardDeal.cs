@@ -12,6 +12,7 @@ public class MemoryCardDeal : MonoBehaviour
     [SerializeField] private CardShuffl cardShuffl;
 
     private DifficultyController difficultyController;
+    private AudioManager audioManager;
     public Button HelpButton { get; set; }
     public bool IsFinishGameRound { get; private set; }
 
@@ -43,6 +44,11 @@ public class MemoryCardDeal : MonoBehaviour
         }
     }
 
+    public void SetAudioManager(AudioManager audioManager)
+    {
+        this.audioManager = audioManager;
+    }
+
     public void SetDifficultyController(DifficultyController controler)
     {
         difficultyController = controler;
@@ -64,12 +70,13 @@ public class MemoryCardDeal : MonoBehaviour
         asyncChain.AddAction(Debug.Log, "Dealing started");
         IsDealing = true;
 
-        var movePosition = new Vector3(-numberOfPairs, .1f, 0f);
+        var movePosition = new Vector3(-numberOfPairs / 2f, 2.86f, 0f);
+        var moveOffset = Vector3.right * 0.5f;
         for (var i = 0; i < numberOfPairs * 2; i++)
         {
             Card card = null;
 
-            var instancePosition = Vector3.forward * 10f;
+            var instancePosition = new Vector3(0f, 2.86f, 10f);
             var instanceRotation = cardPrefab.transform.rotation;
 
             if (cardsPool.Count > i && !cardsPool[i].activeSelf)
@@ -80,10 +87,10 @@ public class MemoryCardDeal : MonoBehaviour
                 card = cardsPool[i].GetComponent<Card>();
                 card.SetImage(GetImage(i));
                 card.gameObject.SetActive(true);
-
+                card.AudioManager = audioManager;
                 asyncChain.AddFunc(card.MoveToTable, movePosition);
 
-                movePosition += Vector3.right;
+                movePosition += moveOffset;
                 continue;
             }
 
@@ -92,9 +99,10 @@ public class MemoryCardDeal : MonoBehaviour
 
             card = cardObj.GetComponent<Card>();
             card.SetImage(GetImage(i));
+            card.AudioManager = audioManager;
             asyncChain.AddFunc(card.MoveToTable, movePosition);
 
-            movePosition += Vector3.right;
+            movePosition += moveOffset;
         }
 
         asyncChain.AddFunc(difficultyController.ShowCardsInBeginning, cardsPool);
@@ -151,8 +159,8 @@ public class MemoryCardDeal : MonoBehaviour
                 {
                     isMatch = true;
                     asyncChain
-                        .JoinTween(m.Hide)
-                        .JoinTween(m.MoveTo, Vector3.forward * 10f)
+                        .JoinTween(m.Shake)
+                        .JoinTween(m.MoveTo, new Vector3(0f, 2.86f, 10f))
                         .JoinFunc(m.SetActiveGameObject, false)
                     ;
                 }
@@ -166,7 +174,7 @@ public class MemoryCardDeal : MonoBehaviour
                     var m = card.GetComponent<Card>();
                     
                     asyncChain
-                        .JoinTween(m.MoveTo, Vector3.forward * 10f)
+                        .JoinTween(m.MoveTo, new Vector3(0f, 2.86f, 10f))
                         .JoinFunc(m.SetActiveGameObject, false)
                     ;
                 }
@@ -212,7 +220,7 @@ public class MemoryCardDeal : MonoBehaviour
             if (matches.Count >= countFlipCardATime)
             {
                 for (int j = 0; j < countFlipCardATime; j++)
-                    asyncChain.JoinTween(matches[j].GetComponent<Card>().Hide);
+                    asyncChain.JoinTween(matches[j].GetComponent<Card>().Shake);
 
                 MaxHelpCount--;
                 if (MaxHelpCount == 0 && HelpButton != null)
