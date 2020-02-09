@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class ProgressBar : MonoBehaviour
 {
+    [SerializeField] private GameObject effectPrefab;
     [SerializeField] private Image barBack;
     [SerializeField] private Image barFront;
 
     [SerializeField] private float fillAmountDuration = 2f;
+
+    private ParticleSystem effectInstance;
 
 
     private void OnEnable()
@@ -31,6 +34,7 @@ public class ProgressBar : MonoBehaviour
     public AsyncState Show()
     {
         return Planner.Chain()
+                    .AddAction(ShowParticleEffect)
                     .AddAction(ToggleBarImages, true)
                     .AddTween(ShowEffect)
                 ;
@@ -39,9 +43,18 @@ public class ProgressBar : MonoBehaviour
     public AsyncState Close()
     {
         return Planner.Chain()
+                    .AddAction(ShowParticleEffect)
                     .AddTween(CloseEffect)
                     .AddAction(ToggleBarImages, false)
+                    .AddAwait((AsyncStateInfo state) => state.IsComplete = effectInstance == null)
                 ;
+    }
+
+    public void ShowParticleEffect()
+    {
+        effectInstance = Instantiate(effectPrefab, transform).GetComponent<ParticleSystem>();
+        var totalDuration = effectInstance.main.duration + effectInstance.main.startLifetime.constant;
+        Destroy(effectInstance.gameObject, totalDuration);
     }
 
     private void ToggleBarImages(bool isEnable)

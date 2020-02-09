@@ -392,6 +392,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 116df41e90ae3174d8dfe0a9f44d358b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectPrefab: {fileID: 7599423483242635388, guid: 3e9aa9ad453b51947a102b377bd03bc1,
+    type: 3}
   barBack: {fileID: 1103977474}
   barFront: {fileID: 175547603}
   fillAmountDuration: 2

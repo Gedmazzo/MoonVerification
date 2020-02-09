@@ -7,7 +7,8 @@ public class MemoryAnimations : MonoBehaviour
     public AsyncState StartCutScene()
     {
         return Planner.Chain()
-                .AddTimeout(1f)
+                .AddTimeout(3f)
+                .AddAction(() => cameraAnimator.SetTrigger("CameraStart"))
                 .AddAwait(IsIntroCutSceneFinished)
             ;
     }
